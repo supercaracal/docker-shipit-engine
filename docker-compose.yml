@@ -8,6 +8,7 @@ services:
         RUBY_VERSION: "${RUBY_VERSION}"
         NODE_VERSION: "${NODE_VERSION}"
         RAILS_VERSION: "${RAILS_VERSION}"
+        APP_NAME: "shipit"
     environment:
       TZ: "${TZ}"
       RAILS_ENV: "production"
@@ -19,6 +20,8 @@ services:
     ports:
       - "${HTTP_PORT}:3000"
     command: ["bundle", "exec", "rails", "s", "-b", "0.0.0.0"]
+    volumes:
+      - ./tmp/migration_files:/opt/shipit/db/migrate
     depends_on:
       - db
       - redis
@@ -29,12 +32,15 @@ services:
         RUBY_VERSION: "${RUBY_VERSION}"
         NODE_VERSION: "${NODE_VERSION}"
         RAILS_VERSION: "${RAILS_VERSION}"
+        APP_NAME: "shipit"
     environment:
       TZ: "${TZ}"
       RAILS_ENV: "production"
       DATABASE_URL: "postgresql://${DB_USER}:${DB_PASSWORD}@db/${DB_SCHEMA}"
       REDIS_URL: "redis://redis"
     command: ["bundle", "exec", "sidekiq", "-C", "config/sidekiq.yml"]
+    volumes:
+      - ./tmp/migration_files:/opt/shipit/db/migrate
     depends_on:
       - db
       - redis
