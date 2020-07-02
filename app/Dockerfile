@@ -51,6 +51,7 @@ COPY sidekiq.yml config/sidekiq.yml
 
 RUN bundle install --jobs=4
 RUN bundle exec rake assets:precompile
+RUN bundle exec rake railties:install:migrations
 
 COPY entrypoint.sh /usr/local/bin/docker-entrypoint.sh
 RUN chmod +x /usr/local/bin/docker-entrypoint.sh

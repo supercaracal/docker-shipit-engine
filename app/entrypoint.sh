@@ -2,6 +2,6 @@
 
 set -eu
 
-bundle exec rake railties:install:migrations db:migrate || echo 'Skip migration'
+bundle exec rake db:migrate || echo 'Skip migration'
 
 exec "$@"
