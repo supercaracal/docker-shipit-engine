@@ -1,0 +1,11 @@
+source 'https://rubygems.org'
+git_source(:github) { |repo| "https://github.com/#{repo}.git" }
+
+gem 'bootsnap'
+gem 'pg'
+gem 'puma'
+gem 'rails'
+gem 'rake'
+gem 'redis'
+gem 'shipit-engine'
+gem 'sidekiq'
