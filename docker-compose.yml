@@ -1,0 +1,61 @@
+---
+version: "3"
+services:
+  app:
+    build:
+      context: "app"
+      args:
+        RUBY_VERSION: "${RUBY_VERSION}"
+        NODE_VERSION: "${NODE_VERSION}"
+        RAILS_VERSION: "${RAILS_VERSION}"
+    environment:
+      TZ: "${TZ}"
+      RAILS_ENV: "production"
+      PORT: 3000
+      RAILS_MAX_THREADS: 5
+      WEB_CONCURRENCY: 2
+      DATABASE_URL: "postgresql://${DB_USER}:${DB_PASSWORD}@db/${DB_SCHEMA}"
+      REDIS_URL: "redis://redis"
+    ports:
+      - "${HTTP_PORT}:3000"
+    command: ["bundle", "exec", "rails", "s", "-b", "0.0.0.0"]
+    depends_on:
+      - db
+      - redis
+  worker:
+    build:
+      context: "app"
+      args:
+        RUBY_VERSION: "${RUBY_VERSION}"
+        NODE_VERSION: "${NODE_VERSION}"
+        RAILS_VERSION: "${RAILS_VERSION}"
+    environment:
+      TZ: "${TZ}"
+      RAILS_ENV: "production"
+      DATABASE_URL: "postgresql://${DB_USER}:${DB_PASSWORD}@db/${DB_SCHEMA}"
+      REDIS_URL: "redis://redis"
+    command: ["bundle", "exec", "sidekiq", "-C", "config/sidekiq.yml"]
+    depends_on:
+      - db
+      - redis
+  db:
+    image: "postgres:${POSTGRES_VERSION}"
+    environment:
+      TZ: "${TZ}"
+      POSTGRES_DB: "${DB_SCHEMA}"
+      POSTGRES_USER: "${DB_USER}"
+      POSTGRES_PASSWORD: "${DB_PASSWORD}"
+      PGDATA: "/var/lib/postgresql/data/pgdata"
+    volumes:
+      - ./tmp/db:/var/lib/postgresql/data/pgdata
+  redis:
+    image: "redis:${REDIS_VERSION}"
+    environment:
+      TZ: "${TZ}"
+    volumes:
+      - ./tmp/redis:/data
+networks:
+  default:
+    ipam:
+      config:
+        - subnet: 172.20.0.0/16
