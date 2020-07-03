@@ -4,6 +4,7 @@ git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 gem 'bootsnap'
 gem 'pg'
 gem 'puma'
+gem 'rack', github: 'rack/rack'
 gem 'rails'
 gem 'rake'
 gem 'redis'
