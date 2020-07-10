@@ -1,8 +1,7 @@
 ---
 :concurrency: 1
-:verbose: True
 :queues:
-  - default
-  - deploys
-  - hooks
-  - low
+  - shipit_default
+  - shipit_deploys
+  - shipit_hooks
+  - shipit_low
