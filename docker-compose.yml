@@ -17,6 +17,14 @@ services:
       WEB_CONCURRENCY: 2
       DATABASE_URL: "postgresql://${DB_USER}:${DB_PASSWORD}@db/${DB_SCHEMA}"
       REDIS_URL: "redis://redis"
+      SECRET_KEY_BASE: "${SECRET_KEY_BASE}"
+      HOST: "localhost"
+      GITHUB_APP_ID: "${GITHUB_APP_ID}"
+      GITHUB_INSTALLATION_ID: "${GITHUB_INSTALLATION_ID}"
+      GITHUB_WEBHOOK_SECRET: "${GITHUB_WEBHOOK_SECRET}"
+      GITHUB_PRIVATE_KEY: "${GITHUB_PRIVATE_KEY}"
+      GITHUB_OAUTH_ID: "${GITHUB_OAUTH_ID}"
+      GITHUB_OAUTH_SECRET: "${GITHUB_OAUTH_SECRET}"
     ports:
       - "${HTTP_PORT}:3000"
     command: ["bundle", "exec", "rails", "s", "-b", "0.0.0.0"]
@@ -38,6 +46,14 @@ services:
       RAILS_ENV: "production"
       DATABASE_URL: "postgresql://${DB_USER}:${DB_PASSWORD}@db/${DB_SCHEMA}"
       REDIS_URL: "redis://redis"
+      SECRET_KEY_BASE: "${SECRET_KEY_BASE}"
+      HOST: "localhost"
+      GITHUB_APP_ID: "${GITHUB_APP_ID}"
+      GITHUB_INSTALLATION_ID: "${GITHUB_INSTALLATION_ID}"
+      GITHUB_WEBHOOK_SECRET: "${GITHUB_WEBHOOK_SECRET}"
+      GITHUB_PRIVATE_KEY: "${GITHUB_PRIVATE_KEY}"
+      GITHUB_OAUTH_ID: "${GITHUB_OAUTH_ID}"
+      GITHUB_OAUTH_SECRET: "${GITHUB_OAUTH_SECRET}"
     command: ["bundle", "exec", "sidekiq", "-C", "config/sidekiq.yml"]
     volumes:
       - ./tmp/migration_files:/opt/shipit/db/migrate
